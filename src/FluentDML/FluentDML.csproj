@@ -40,8 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SyntaxExample.cs" />
+    <Compile Include="IUpsertSet.cs" />
+    <Compile Include="IDelete.cs" />
+    <Compile Include="IUpsert.cs" />
+    <Compile Include="IUpsertWhere.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IUpdate.cs" />
+    <Compile Include="IUpdateMap.cs" />
+    <Compile Include="IUpdateSet.cs" />
+    <Compile Include="IUpdateWhere.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
