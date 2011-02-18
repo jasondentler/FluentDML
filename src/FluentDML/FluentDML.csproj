@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDeleteWhere.cs" />
     <Compile Include="SyntaxExample.cs" />
     <Compile Include="IUpsertSet.cs" />
     <Compile Include="IDelete.cs" />

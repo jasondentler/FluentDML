@@ -2,32 +2,39 @@
 
 namespace FluentDML
 {
-    class SyntaxExample
+    internal class SyntaxExample
     {
 
         public SyntaxExample()
         {
-            Update<SyntaxExample>()
+
+            var evnt = new SomeEvent();
+
+            Update<SomeViewModel>()
                 .Set(c => c.Value1, "name")
                 .Set(c => c.Value2, 1)
                 .Where(c => c.Id == new Guid())
-                .And(c => c.Value2 == 1);
+                .And(c => c.Value2 == 1)
+                .ToCommand();
 
-            Update<SyntaxExample>()
-                .MapFrom(new object())
+            Update<SomeViewModel>()
+                .MapFrom(evnt)
                 .WithId(c => c.Id);
 
-            Upsert<SyntaxExample>()
+            Upsert<SomeViewModel>()
                 .Set(c => c.Value1, "name")
                 .Set(c => c.Value2, 1)
                 .WithId(c => c.Id);
 
-            Upsert<SyntaxExample>()
-                .MapFrom(new object())
+            Upsert<SomeViewModel>()
+                .MapFrom(evnt)
                 .WithId(c => c.Id);
 
-            Delete<SyntaxExample>()
-                .Where(c => c.Id == new Guid());
+            Delete<SomeViewModel>()
+                .Where(c => c.Id == new Guid())
+                .And(c => c.Value2 == 1)
+                .ToCommand();
+                
         }
 
         public IDelete<T> Delete<T>()
@@ -45,10 +52,20 @@ namespace FluentDML
             throw new NotImplementedException();
         }
 
-        public string Value1 { get; set; }
-        public int Value2 { get; set; }
+        protected class SomeViewModel
+        {
+            public Guid Id { get; set; }
+            public string Value1 { get; set; }
+            public int Value2 { get; set; }
+        }
 
-        public Guid Id { get; set; }
+        protected class SomeEvent
+        {
+            public Guid Id { get; set; }
+            public string Value1 { get; set; }
+            public int Value2 { get; set; }
+        }
+
 
     }
 }
