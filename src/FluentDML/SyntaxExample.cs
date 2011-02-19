@@ -11,6 +11,9 @@ namespace FluentDML
             var db = GetDialect();
             var dto = new SomeDTO();
 
+            db.Insert<SomeEntity>()
+                .MapFrom(dto);
+
             db.Update<SomeEntity>()
                 .Set(c => c.Value1, dto.Value1)
                 .Set(c => c.Value2, dto.Value2)
@@ -21,16 +24,7 @@ namespace FluentDML
             db.Update<SomeEntity>()
                 .MapFrom(dto)
                 .WithId(c => c.Id);
-
-            db.Upsert<SomeEntity>()
-                .Set(c => c.Value1, dto.Value1)
-                .Set(c => c.Value2, dto.Value2)
-                .WithId(c => c.Id);
-
-            db.Upsert<SomeEntity>()
-                .MapFrom(dto)
-                .WithId(c => c.Id);
-
+            
             db.Delete<SomeEntity>()
                 .Where(c => c.Id == dto.Id)
                 .And(c => c.Value2 == dto.Value2)

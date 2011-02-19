@@ -22,11 +22,6 @@ namespace FluentDML.Dialect
             return CreateSqlDelete<T>(_map.GetClassMap<T>());
         }
 
-        public IUpsert<T> Upsert<T>()
-        {
-            throw new NotImplementedException();
-        }
-
         public IUpdate<T> Update<T>()
         {
             return CreateSqlUpdate<T>(_map.GetClassMap<T>());
