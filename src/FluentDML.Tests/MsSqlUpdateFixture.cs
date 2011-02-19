@@ -50,7 +50,7 @@ namespace FluentDML.Tests
         {
             var cmd = GetBasicCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("WHERE t.[Name] = @p3"));
+            Assert.That(sql, Is.StringContaining("WHERE (t.[Name] = @p3)"));
         }
 
         [Test]

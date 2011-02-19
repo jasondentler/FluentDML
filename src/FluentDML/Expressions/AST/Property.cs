@@ -2,7 +2,7 @@
 
 namespace FluentDML.Expressions.AST
 {
-    public class Property : MyExpression
+    public class Property : SimpleExpression
     {
 
         public Property(Expression expression)

@@ -6,13 +6,13 @@ namespace FluentDML.Expressions
     public class PredicateParserVisitor : ExpressionVisitor
     {
 
-        private MyExpression _expression;
+        private SimpleExpression _expression;
 
         protected PredicateParserVisitor()
         {
         }
 
-        public static MyExpression Parse(Expression expression)
+        public static SimpleExpression Parse(Expression expression)
         {
             var parser = new PredicateParserVisitor();
             parser.Visit(expression);

@@ -3,10 +3,10 @@
 namespace FluentDML.Expressions.AST
 {
 
-    public class Binary : MyExpression
+    public class Binary : SimpleExpression
     {
 
-        public Binary(MyExpression left, MyExpression right, ExpressionType operation)
+        public Binary(SimpleExpression left, SimpleExpression right, ExpressionType operation)
         {
             Left = left;
             Right = right;
@@ -20,8 +20,8 @@ namespace FluentDML.Expressions.AST
             Operation = binaryExpression.NodeType;
         }
 
-        public MyExpression Left { get; set; }
-        public MyExpression Right { get; set; }
+        public SimpleExpression Left { get; set; }
+        public SimpleExpression Right { get; set; }
         public ExpressionType Operation { get; set; }
 
         //public enum BinaryOperations

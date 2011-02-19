@@ -16,19 +16,19 @@ namespace FluentDML.Dialect
     {
 
         private readonly Dictionary<string, object> _setMap;
-        private readonly List<MyExpression> _predicates;
-        private readonly ClassMap _map;
+        private readonly List<SimpleExpression> _predicates;
+        protected readonly ClassMap Map;
 
         protected BaseSqlUpdate(ClassMap map)
         {
-            _map = map;
+            Map = map;
             _setMap = new Dictionary<string, object>();
-            _predicates = new List<MyExpression>();
+            _predicates = new List<SimpleExpression>();
         }
 
         public IUpdateSet<T> Set<TProperty>(Expression<Func<T, TProperty>> property, TProperty value)
         {
-            _setMap.Add(_map.GetColumnName(property), value);
+            _setMap.Add(Map.GetColumnName(property), value);
             return this;
         }
 
@@ -46,14 +46,14 @@ namespace FluentDML.Dialect
 
         public IDbCommand ToCommand()
         {
-            return ToCommand(_map.TableName, _setMap, And(_predicates));
+            return ToCommand(Map.TableName, _setMap, And(_predicates));
         }
 
-        protected virtual MyExpression And(IEnumerable<MyExpression> predicatesEnum)
+        protected virtual SimpleExpression And(IEnumerable<SimpleExpression> predicatesEnum)
         {
             if (!predicatesEnum.Any())
                 return null;
-            var q = new Queue<MyExpression>(predicatesEnum);
+            var q = new Queue<SimpleExpression>(predicatesEnum);
             var root = q.Dequeue();
             while (q.Any())
                 root = new Binary(root, q.Dequeue(), ExpressionType.AndAlso);
@@ -63,7 +63,7 @@ namespace FluentDML.Dialect
         protected abstract IDbCommand ToCommand(
             string tableName,
             Dictionary<string, object> set,
-            MyExpression predicate);
+            SimpleExpression predicate);
 
     }
 }

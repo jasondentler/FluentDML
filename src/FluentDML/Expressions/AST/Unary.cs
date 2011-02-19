@@ -2,7 +2,7 @@
 
 namespace FluentDML.Expressions.AST
 {
-    public class Unary : MyExpression
+    public class Unary : SimpleExpression
     {
 
         public Unary(UnaryExpression expression)
@@ -11,7 +11,7 @@ namespace FluentDML.Expressions.AST
             Operation = expression.NodeType;
         }
 
-        public MyExpression Expression { get; set; }
+        public SimpleExpression Expression { get; set; }
         public ExpressionType Operation { get; set; }
 
         //public enum UnaryOperations

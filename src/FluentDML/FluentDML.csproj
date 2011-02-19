@@ -49,8 +49,9 @@
     <Compile Include="Dialect\BaseSqlUpdate.cs" />
     <Compile Include="Expressions\AST\Binary.cs" />
     <Compile Include="Expressions\AST\Constant.cs" />
-    <Compile Include="Expressions\AST\MyExpression.cs" />
+    <Compile Include="Expressions\AST\SimpleExpression.cs" />
     <Compile Include="Expressions\AST\Property.cs" />
+    <Compile Include="Expressions\AST\SimpleExpressionExtensions.cs" />
     <Compile Include="Expressions\AST\Unary.cs" />
     <Compile Include="Expressions\PredicateParserVisitor.cs" />
     <Compile Include="IDeleteWhere.cs" />
