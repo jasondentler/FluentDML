@@ -7,8 +7,6 @@ namespace FluentDML.Mapping
 {
     public class ClassMap
     {
-        private readonly Type _mappedType;
-        private readonly string _tableName;
         private readonly Dictionary<string, string> _propertyMap;
 
         public ClassMap(Type mappedType, string tableName)

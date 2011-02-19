@@ -26,11 +26,14 @@ namespace FluentDML.Dialect
         {
         }
 
-
         protected override IUpdate<T> CreateSqlUpdate<T>(ClassMap map)
         {
             return new MsSqlUpdate<T>(_commandConstructor, map);
         }
 
+        protected override IDelete<T> CreateSqlDelete<T>(ClassMap map)
+        {
+            return new MsSqlDelete<T>(_commandConstructor, map);
+        }
     }
 }

@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dialect\BaseSql.cs" />
+    <Compile Include="Dialect\BaseSqlDelete.cs" />
+    <Compile Include="Dialect\MsSqlDelete.cs" />
     <Compile Include="Dialect\MsSqlDialect.cs" />
     <Compile Include="Dialect\MsSqlUpdate.cs" />
     <Compile Include="Dialect\BaseDialect.cs" />

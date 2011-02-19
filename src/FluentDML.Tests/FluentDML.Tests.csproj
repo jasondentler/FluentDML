@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseFixture.cs" />
+    <Compile Include="MsSqlDeleteFixture.cs" />
     <Compile Include="PredicateParserVisitorFixture.cs" />
     <Compile Include="DefaultMapMakerFixture.cs" />
     <Compile Include="FindPropertyVisitorFixture.cs" />
