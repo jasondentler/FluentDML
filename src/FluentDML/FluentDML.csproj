@@ -47,8 +47,10 @@
     <Compile Include="AutoMapped\DictionaryMapper.cs" />
     <Compile Include="Dialect\BaseSql.cs" />
     <Compile Include="Dialect\BaseSqlDelete.cs" />
+    <Compile Include="Dialect\BaseSqlInsert.cs" />
     <Compile Include="Dialect\MsSqlDelete.cs" />
     <Compile Include="Dialect\MsSqlDialect.cs" />
+    <Compile Include="Dialect\MsSqlInsert.cs" />
     <Compile Include="Dialect\MsSqlUpdate.cs" />
     <Compile Include="Dialect\BaseDialect.cs" />
     <Compile Include="Dialect\BaseSqlUpdate.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Expressions\PredicateParserVisitor.cs" />
     <Compile Include="IDeleteWhere.cs" />
     <Compile Include="Dialect\IDialect.cs" />
+    <Compile Include="IInsert.cs" />
     <Compile Include="Mapping\DefaultMapMaker.cs" />
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FindMemberVisitor.cs" />

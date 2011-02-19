@@ -35,5 +35,10 @@ namespace FluentDML.Dialect
         {
             return new MsSqlDelete<T>(_commandConstructor, map);
         }
+
+        protected override IInsert<T> CreateSqlInsert<T>(ClassMap map)
+        {
+            return new MsSqlInsert<T>(_commandConstructor, map);
+        }
     }
 }

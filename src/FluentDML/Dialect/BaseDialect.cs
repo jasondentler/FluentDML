@@ -12,6 +12,11 @@ namespace FluentDML.Dialect
             _map = map;
         }
 
+        public IInsert<T> Insert<T>()
+        {
+            return CreateSqlInsert<T>(_map.GetClassMap<T>());
+        }
+
         public IDelete<T> Delete<T>()
         {
             return CreateSqlDelete<T>(_map.GetClassMap<T>());
@@ -29,6 +34,7 @@ namespace FluentDML.Dialect
 
         protected abstract IUpdate<T> CreateSqlUpdate<T>(ClassMap map);
         protected abstract IDelete<T> CreateSqlDelete<T>(ClassMap map);
+        protected abstract IInsert<T> CreateSqlInsert<T>(ClassMap map);
 
     }
 }
