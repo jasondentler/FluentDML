@@ -126,6 +126,22 @@ namespace FluentDML.Tests
 
         }
 
+        protected override void OnFixtureTearDown()
+        {
+            var mapMaker = new DefaultMapMaker();
+            var map = mapMaker.MakeMap(typeof(Customer));
+            var db = new MsSqlDialect(map);
+            var connStr = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+            using (var conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                var cmd = db.Delete<Customer>().Where(c => true).ToCommand();
+                cmd.Connection = conn;
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            base.OnFixtureTearDown();
+        }
 
     }
 }

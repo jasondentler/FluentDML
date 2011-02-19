@@ -43,6 +43,11 @@ namespace FluentDML.Dialect
 
         protected virtual string Convert(SimpleExpression predicate, IDbCommand command)
         {
+            if (predicate is Constant && (predicate as Constant).Value is bool)
+            {
+                var boolPredicate = (bool)((Constant)predicate).Value;
+                return boolPredicate ? string.Empty : "WHERE 1=0";
+            }
             var sql = new StringBuilder();
             sql.Append("WHERE ");
             Convert(predicate, command, sql);
@@ -188,6 +193,18 @@ namespace FluentDML.Dialect
 
         protected virtual void Convert(Constant constant, IDbCommand command, StringBuilder sql)
         {
+            if (constant.Value is bool && (bool)constant.Value)
+            {
+                sql.Append("1");
+                return;
+            }
+
+            if (constant.Value is bool && !(bool)constant.Value)
+            {
+                sql.Append("0");
+                return;
+            }
+
             var paramName = SetParameter(command, constant.Value);
             sql.Append("@");
             sql.Append(paramName);
