@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A4F4F5E6-C8A0-4EAC-9085-558CD6887740}</ProjectGuid>
+    <ProjectGuid>{0D01304E-7524-4FFB-BE59-201B9ACB99C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentDML</RootNamespace>
-    <AssemblyName>FluentDML</AssemblyName>
+    <RootNamespace>FluentDML.Tests</RootNamespace>
+    <AssemblyName>FluentDML.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.1.1.0.118\lib\AutoMapper.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.5.9.10348\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,30 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialect\AnsiSQL.cs" />
-    <Compile Include="Dialect\AnsiSqlUpdate.cs" />
-    <Compile Include="IDeleteWhere.cs" />
-    <Compile Include="Dialect\IDialect.cs" />
-    <Compile Include="Mapping\DefaultMapMaker.cs" />
-    <Compile Include="Mapping\ExpressionVisitor.cs" />
-    <Compile Include="Mapping\FindMemberVisitor.cs" />
-    <Compile Include="Mapping\ClassMap.cs" />
-    <Compile Include="Mapping\IMapMaker.cs" />
-    <Compile Include="Mapping\Map.cs" />
-    <Compile Include="Mapping\MapMaker.cs" />
-    <Compile Include="SyntaxExample.cs" />
-    <Compile Include="IUpsertSet.cs" />
-    <Compile Include="IDelete.cs" />
-    <Compile Include="IUpsert.cs" />
-    <Compile Include="IUpsertWhere.cs" />
+    <Compile Include="BaseFixture.cs" />
+    <Compile Include="DefaultMapMakerFixture.cs" />
+    <Compile Include="FindPropertyVisitorFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IUpdate.cs" />
-    <Compile Include="IUpdateMap.cs" />
-    <Compile Include="IUpdateSet.cs" />
-    <Compile Include="IUpdateWhere.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentDML\FluentDML.csproj">
+      <Project>{A4F4F5E6-C8A0-4EAC-9085-558CD6887740}</Project>
+      <Name>FluentDML</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

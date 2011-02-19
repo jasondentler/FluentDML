@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentDML.Dialect;
 
 namespace FluentDML
 {
@@ -7,65 +8,55 @@ namespace FluentDML
 
         public SyntaxExample()
         {
+            var db = GetDialect();
+            var dto = new SomeDTO();
 
-            var evnt = new SomeEvent();
-
-            Update<SomeViewModel>()
-                .Set(c => c.Value1, "name")
-                .Set(c => c.Value2, 1)
-                .Where(c => c.Id == new Guid())
+            db.Update<SomeEntity>()
+                .Set(c => c.Value1, dto.Value1)
+                .Set(c => c.Value2, dto.Value2)
+                .Where(c => c.Id == dto.Id)
                 .And(c => c.Value2 == 1)
                 .ToCommand();
 
-            Update<SomeViewModel>()
-                .MapFrom(evnt)
+            db.Update<SomeEntity>()
+                .MapFrom(dto)
                 .WithId(c => c.Id);
 
-            Upsert<SomeViewModel>()
-                .Set(c => c.Value1, "name")
-                .Set(c => c.Value2, 1)
+            db.Upsert<SomeEntity>()
+                .Set(c => c.Value1, dto.Value1)
+                .Set(c => c.Value2, dto.Value2)
                 .WithId(c => c.Id);
 
-            Upsert<SomeViewModel>()
-                .MapFrom(evnt)
+            db.Upsert<SomeEntity>()
+                .MapFrom(dto)
                 .WithId(c => c.Id);
 
-            Delete<SomeViewModel>()
-                .Where(c => c.Id == new Guid())
-                .And(c => c.Value2 == 1)
+            db.Delete<SomeEntity>()
+                .Where(c => c.Id == dto.Id)
+                .And(c => c.Value2 == dto.Value2)
                 .ToCommand();
-                
+
         }
 
-        public IDelete<T> Delete<T>()
-        {
-            throw new NotImplementedException();
-        }
 
-        public IUpsert<T> Upsert<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IUpdate<T> Update<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected class SomeViewModel
+        protected class SomeEntity
         {
             public Guid Id { get; set; }
             public string Value1 { get; set; }
             public int Value2 { get; set; }
         }
 
-        protected class SomeEvent
+        protected class SomeDTO
         {
             public Guid Id { get; set; }
             public string Value1 { get; set; }
             public int Value2 { get; set; }
         }
 
+        private IDialect GetDialect()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }
