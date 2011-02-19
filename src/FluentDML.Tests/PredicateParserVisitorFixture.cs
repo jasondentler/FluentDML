@@ -42,6 +42,17 @@ namespace FluentDML.Tests
             Assert.That(myBinary.Right, Is.InstanceOf<Constant>());
         }
 
+        [Test]
+        public void Can_parse_variable_to_constant()
+        {
+            var id = new Guid();
+            var expr = MakeExpression<Customer, Guid>(c => id);
+            var myExpr = PredicateParserVisitor.Parse(expr);
+            var myConstant = myExpr as Constant;
+            Assert.That(myExpr, Is.InstanceOf<Constant>());
+            Assert.That(myConstant.Value, Is.EqualTo(new Guid()));
+        }
+
 
         private static Expression MakeExpression<T, TProperty>(Expression<Func<T, TProperty>> expression)
         {

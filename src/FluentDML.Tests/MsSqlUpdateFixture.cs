@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using FluentDML.Dialect;
 using FluentDML.Mapping;
 using NUnit.Framework;
@@ -14,11 +15,12 @@ namespace FluentDML.Tests
             var mapMaker = new DefaultMapMaker();
             var map = mapMaker.MakeMap(typeof (Customer));
             var db = new MsSqlDialect(map);
+            var id = new Guid();
             return db.Update<Customer>()
                 .Set(c => c.Name, "Jason")
                 .Set(c => c.Address.City, "Houston")
                 .Set(c => c.Address.State, "TX")
-                .Where(c => c.Name == "")
+                .Where(c => c.CustomerId == id)
                 .ToCommand();
         }
 
@@ -50,7 +52,7 @@ namespace FluentDML.Tests
         {
             var cmd = GetBasicCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("WHERE (t.[Name] = @p3)"));
+            Assert.That(sql, Is.StringContaining("WHERE (t.[CustomerId] = @p3)"));
         }
 
         [Test]
@@ -66,12 +68,13 @@ namespace FluentDML.Tests
         public void it_generates_where_parameters()
         {
             var cmd = GetBasicCommand();
-            Assert.That(GetParam(cmd, "p3").Value, Is.EqualTo(""));
+            Assert.That(GetParam(cmd, "p3").Value, Is.EqualTo(new Guid()));
         }
 
 
         private class Customer
         {
+            public Guid CustomerId { get; set; }
             public string Name { get; set; }
             public Address Address { get; set; }
         }

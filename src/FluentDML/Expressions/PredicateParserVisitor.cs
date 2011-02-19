@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 using FluentDML.Expressions.AST;
 
 namespace FluentDML.Expressions
@@ -18,8 +20,7 @@ namespace FluentDML.Expressions
             parser.Visit(expression);
             return parser._expression;
         }
-
-
+        
         protected override Expression VisitBinary(BinaryExpression b)
         {
             _expression = new Binary(b);
@@ -34,6 +35,12 @@ namespace FluentDML.Expressions
 
         protected override Expression VisitMemberAccess(MemberExpression m)
         {
+            if (m.Expression.NodeType == ExpressionType.Constant &&
+                m.Member.MemberType == MemberTypes.Field)
+            {
+                VisitVariable(m);
+                return m;
+            }
             _expression = new Property(m);
             return m;
         }
@@ -42,6 +49,14 @@ namespace FluentDML.Expressions
         {
             _expression = new Constant(c.Value);
             return c;
+        }
+
+        protected virtual Expression VisitVariable(MemberExpression m)
+        {
+            var constant = (ConstantExpression) m.Expression;
+            var field = (FieldInfo) m.Member;
+            _expression = new Constant(field.GetValue(constant.Value));
+            return m;
         }
 
 
