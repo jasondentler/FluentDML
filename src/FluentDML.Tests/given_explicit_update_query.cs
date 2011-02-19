@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace FluentDML.Tests
 {
     [TestFixture]
-    public class MsSqlDeleteFixture : BaseFixture
+    public class given_explicit_update_query : BaseFixture
     {
 
         private IDbCommand GetBasicCommand()
@@ -19,7 +19,9 @@ namespace FluentDML.Tests
             var map = mapMaker.MakeMap(typeof (Customer));
             var db = new MsSqlDialect(map);
             var id = new Guid();
-            return db.Delete<Customer>()
+            return db.Update<Customer>()
+                .Set(c => c.Name, "Jason")
+                .Set(c => c.Billing.City, "Houston")
                 .Where(c => c.CustomerId == id)
                 .ToCommand();
         }
@@ -30,11 +32,20 @@ namespace FluentDML.Tests
         }
 
         [Test]
-        public void it_generates_delete_sql()
+        public void it_generates_update_sql()
         {
             var cmd = GetBasicCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringStarting("DELETE FROM [Customer] WHERE"));
+            Assert.That(sql, Is.StringStarting("UPDATE [Customer] SET"));
+        }
+
+        [Test]
+        public void it_generates_set_clause()
+        {
+            var cmd = GetBasicCommand();
+            var sql = cmd.CommandText;
+            Assert.That(sql, Is.StringContaining("[Name] = @p0"));
+            Assert.That(sql, Is.StringContaining("[Billing_City] = @p1"));
         }
 
         [Test]
@@ -42,18 +53,26 @@ namespace FluentDML.Tests
         {
             var cmd = GetBasicCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("WHERE ([CustomerId] = @p0)"));
+            Assert.That(sql, Is.StringContaining("WHERE ([CustomerId] = @p2)"));
+        }
+
+        [Test]
+        public void it_generates_set_parameters()
+        {
+            var cmd = GetBasicCommand();
+            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo("Jason"));
+            Assert.That(GetParam(cmd, "p1").Value, Is.EqualTo("Houston"));
         }
 
         [Test]
         public void it_generates_where_parameters()
         {
             var cmd = GetBasicCommand();
-            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(new Guid()));
+            Assert.That(GetParam(cmd, "p2").Value, Is.EqualTo(new Guid()));
         }
 
         [Test]
-        public void it_deletes_a_row()
+        public void it_updated_a_row()
         {
             int rows;
             var id = Guid.NewGuid();
@@ -74,35 +93,22 @@ namespace FluentDML.Tests
                 insert.Connection = conn;
                 insert.ExecuteNonQuery();
 
-                var delete = db.Delete<Customer>()
+                var update = db.Update<Customer>()
+                    .Set(c => c.Name, "Jason")
+                    .Set(c => c.Billing.City, "Houston")
                     .Where(c => c.CustomerId == id)
                     .ToCommand();
 
-                Debug.WriteLine(delete.CommandText);
+                Debug.WriteLine(update.CommandText);
 
-                delete.Connection = conn;
-                rows = delete.ExecuteNonQuery();
+                update.Connection = conn;
+                rows = update.ExecuteNonQuery();
                 conn.Close();
             }
 
             Assert.That(rows, Is.EqualTo(1));
 
         }
-
-
-        private class Customer
-        {
-            public Guid CustomerId { get; set; }
-            public string Name { get; set; }
-            public Address Address { get; set; }
-        }
-
-        private class Address
-        {
-            public string City { get; set; }
-            public string State { get; set; }
-        }
-
 
     }
 }

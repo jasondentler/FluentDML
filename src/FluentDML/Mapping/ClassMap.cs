@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using FluentDML.Expressions;
 
@@ -41,5 +42,14 @@ namespace FluentDML.Mapping
             return _propertyMap[propertyPath];
         }
 
+        public bool IsMapped(string propertyPath)
+        {
+            return _propertyMap.ContainsKey(propertyPath);
+        }
+
+        public bool IsComponent(string propertyPath)
+        {
+            return !IsMapped(propertyPath) && _propertyMap.Keys.Any(p => p.StartsWith(propertyPath));
+        }
     }
 }

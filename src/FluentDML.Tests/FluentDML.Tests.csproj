@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=1.1.0.188, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
@@ -47,12 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
+    <Compile Include="given_complex_update_by_map.cs" />
+    <Compile Include="Customer.cs" />
+    <Compile Include="CustomerCreatedEvent.cs" />
+    <Compile Include="CustomerMovedEvent.cs" />
+    <Compile Include="given_simple_update_by_map_query.cs" />
+    <Compile Include="DictionaryMapperFixture.cs" />
     <Compile Include="MsSqlDeleteFixture.cs" />
     <Compile Include="PredicateParserVisitorFixture.cs" />
     <Compile Include="DefaultMapMakerFixture.cs" />
     <Compile Include="FindPropertyVisitorFixture.cs" />
-    <Compile Include="MsSqlUpdateFixture.cs" />
+    <Compile Include="given_explicit_update_query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
