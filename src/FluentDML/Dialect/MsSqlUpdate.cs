@@ -35,13 +35,12 @@ namespace FluentDML.Dialect
             SimpleExpression predicate)
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("UPDATE [{0}] t SET", tableName);
+            sb.AppendFormat("UPDATE [{0}] SET", tableName);
 
-            var paramIndex = 0;
             foreach (var item in set)
             {
-                sb.AppendLine(paramIndex == 0 ? "" : ",");
-                sb.AppendFormat("t.[{0}] = @p{1}", item.Key, command.Parameters.Count);
+                sb.AppendLine(command.Parameters.Count == 0 ? "" : ",");
+                sb.AppendFormat("[{0}] = @p{1}", item.Key, command.Parameters.Count);
                 SetParameter(command, item.Value);
             }
             sb.AppendLine();
@@ -198,7 +197,7 @@ namespace FluentDML.Dialect
 
         protected virtual void Convert(Property property, IDbCommand command, StringBuilder sql)
         {
-            sql.Append("t.[");
+            sql.Append("[");
             sql.Append(Map.GetColumnName(property.PropertyPath));
             sql.Append("]");
         }
