@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace FluentDML.Mapping
 {
@@ -31,6 +32,11 @@ namespace FluentDML.Mapping
         public ClassMap GetClassMap<T>(T instance)
         {
             return GetClassMap<T>();
+        }
+
+        public string GetColumnName<T, TProperty>(Expression<Func<T, TProperty>> property)
+        {
+            return GetClassMap<T>().GetColumnName(property);
         }
 
     }

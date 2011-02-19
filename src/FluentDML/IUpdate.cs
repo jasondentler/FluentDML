@@ -7,7 +7,7 @@ namespace FluentDML
     {
 
         IUpdateSet<T> Set<TProperty>(Expression<Func<T, TProperty>> property, TProperty value);
-        IUpdateMap<T> MapFrom<TSource>(TSource source);
+        //IUpdateMap<T> MapFrom<TSource>(TSource source);
 
     }
 }

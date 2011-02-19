@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using FluentDML.Mapping;
+using FluentDML.Expressions;
 using NUnit.Framework;
 
 namespace FluentDML.Tests

@@ -18,9 +18,9 @@ namespace FluentDML
                 .And(c => c.Value2 == 1)
                 .ToCommand();
 
-            db.Update<SomeEntity>()
-                .MapFrom(dto)
-                .WithId(c => c.Id);
+            //db.Update<SomeEntity>()
+            //    .MapFrom(dto)
+            //    .WithId(c => c.Id);
 
             db.Upsert<SomeEntity>()
                 .Set(c => c.Value1, dto.Value1)

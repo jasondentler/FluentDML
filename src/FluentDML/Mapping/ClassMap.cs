@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using FluentDML.Expressions;
 
 namespace FluentDML.Mapping
 {
@@ -31,7 +32,7 @@ namespace FluentDML.Mapping
             _propertyMap.Add(propertyPath, columnName);
         }
 
-        public string GetColumnName<T>(Expression<Func<T, object>> property)
+        public string GetColumnName<T, TProperty>(Expression<Func<T, TProperty>> property)
         {
             var propertyPath = FindMemberVisitor.FindMember(property);
             return GetColumnName(propertyPath);

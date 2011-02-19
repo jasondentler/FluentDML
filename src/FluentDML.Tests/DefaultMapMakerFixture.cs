@@ -52,7 +52,7 @@ namespace FluentDML.Tests
             var mapMaker = new DefaultMapMaker();
             var map = mapMaker.MakeMap(typeof(Address));
             var classMap = map.GetClassMap<Address>();
-            var cityColumn = classMap.GetColumnName<Address>(a => a.City);
+            var cityColumn = classMap.GetColumnName<Address, string>(a => a.City);
             Assert.That(cityColumn, Is.EqualTo("City"));
         }
 
@@ -62,7 +62,7 @@ namespace FluentDML.Tests
             var mapMaker = new DefaultMapMaker();
             var map = mapMaker.MakeMap(typeof(Address));
             var classMap = map.GetClassMap<Address>();
-            var stateColumn = classMap.GetColumnName<Address>(a => a.State);
+            var stateColumn = classMap.GetColumnName<Address, string>(a => a.State);
             Assert.That(stateColumn, Is.EqualTo("State"));
         }
 

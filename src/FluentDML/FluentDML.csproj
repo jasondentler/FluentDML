@@ -43,13 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialect\AnsiSQL.cs" />
-    <Compile Include="Dialect\AnsiSqlUpdate.cs" />
+    <Compile Include="Dialect\MsSqlDialect.cs" />
+    <Compile Include="Dialect\MsSqlUpdate.cs" />
+    <Compile Include="Dialect\BaseDialect.cs" />
+    <Compile Include="Dialect\BaseSqlUpdate.cs" />
+    <Compile Include="Expressions\AST\Binary.cs" />
+    <Compile Include="Expressions\AST\Constant.cs" />
+    <Compile Include="Expressions\AST\MyExpression.cs" />
+    <Compile Include="Expressions\AST\Property.cs" />
+    <Compile Include="Expressions\AST\Unary.cs" />
+    <Compile Include="Expressions\PredicateParserVisitor.cs" />
     <Compile Include="IDeleteWhere.cs" />
     <Compile Include="Dialect\IDialect.cs" />
     <Compile Include="Mapping\DefaultMapMaker.cs" />
-    <Compile Include="Mapping\ExpressionVisitor.cs" />
-    <Compile Include="Mapping\FindMemberVisitor.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\FindMemberVisitor.cs" />
     <Compile Include="Mapping\ClassMap.cs" />
     <Compile Include="Mapping\IMapMaker.cs" />
     <Compile Include="Mapping\Map.cs" />
