@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,13 +9,13 @@ namespace FluentDML.Mapping
 {
     public class ClassMap
     {
-        private readonly Dictionary<string, string> _propertyMap;
+        private readonly ConcurrentDictionary<string, string> _propertyMap;
 
         public ClassMap(Type mappedType, string tableName)
         {
             MappedType = mappedType;
             TableName = tableName;
-            _propertyMap = new Dictionary<string, string>();
+            _propertyMap = new ConcurrentDictionary<string, string>();
         }
 
         public Type MappedType { get; private set; }
@@ -28,7 +29,7 @@ namespace FluentDML.Mapping
 
         public void Add(string propertyPath, string columnName)
         {
-            _propertyMap.Add(propertyPath, columnName);
+            _propertyMap.AddOrUpdate(propertyPath, columnName, (path, newColumn) => newColumn);
         }
 
         public string GetColumnName<T, TProperty>(Expression<Func<T, TProperty>> property)

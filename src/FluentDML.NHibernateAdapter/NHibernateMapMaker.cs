@@ -13,16 +13,17 @@ namespace FluentDML.NHibernateAdapter
     public class NHibernateMapMaker : IMapMaker
     {
         private readonly Configuration _configuration;
-        private readonly IMapping _mapping;
+        private IMapping _mapping;
 
         public NHibernateMapMaker(Configuration configuration)
         {
             _configuration = configuration;
-            _mapping = _configuration.BuildMapping();
         }
 
         public Map MakeMap()
         {
+            if (_mapping == null)
+                _mapping = _configuration.BuildMapping();
             var map = new Map();
             foreach (var classMap in BuildMappings())
                 map.Add(classMap);

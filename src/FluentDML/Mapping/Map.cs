@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -7,16 +8,17 @@ namespace FluentDML.Mapping
     public class Map
     {
 
-        private readonly Dictionary<Type, ClassMap> _classMaps;
+        private readonly ConcurrentDictionary<Type, ClassMap> _classMaps;
 
         public Map()
         {
-            _classMaps = new Dictionary<Type, ClassMap>();
+            _classMaps = new ConcurrentDictionary<Type, ClassMap>();
         }
 
         public void Add(ClassMap classMap)
         {
-            _classMaps.Add(classMap.MappedType, classMap);
+            _classMaps.AddOrUpdate(classMap.MappedType, classMap,
+                                   (t, newClassMap) => newClassMap);
         }
 
         public ClassMap GetClassMap(Type type)
