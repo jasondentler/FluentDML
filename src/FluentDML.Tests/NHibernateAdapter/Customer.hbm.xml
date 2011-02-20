@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+    assembly="FluentDML.Tests"
+    namespace="FluentDML.Tests">
+  <class name="Customer">
+    <id name="CustomerId">
+      <generator class="guid.comb" />
+    </id>
+    <property name="Name" />
+    <component name="Billing" class="Address">
+      <property name="City" column="Billing_City" />
+    </component>
+  </class>
+</hibernate-mapping>
+

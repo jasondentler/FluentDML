@@ -37,6 +37,11 @@ namespace FluentDML.Mapping
             return GetColumnName(propertyPath);
         }
 
+        public IEnumerable<string> GetMappedProperties()
+        {
+            return _propertyMap.Keys.ToArray();
+        }
+
         public string GetColumnName(string propertyPath)
         {
             return _propertyMap[propertyPath];
