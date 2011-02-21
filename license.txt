@@ -13,4 +13,5 @@
    limitations under the License.
    
 
-ExpressionVisitor.cs is licensed separately under the Microsoft Limited Public License available at http://msdn.microsoft.com/en-us/cc300389.aspx#P
+ExpressionVisitor.cs is licensed separately under the Microsoft Limited Public License 
+available at http://msdn.microsoft.com/en-us/cc300389.aspx#P
