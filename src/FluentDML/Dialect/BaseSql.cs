@@ -30,9 +30,13 @@ namespace FluentDML.Dialect
             return root;
         }
 
-
-
         protected virtual string SetParameter(IDbCommand command, object value)
+        {
+            return SetParameter(command, value, string.Empty);
+        }
+
+
+        protected virtual string SetParameter(IDbCommand command, object value, string columnName)
         {
             var param = command.CreateParameter();
             param.ParameterName = "p" + command.Parameters.Count;

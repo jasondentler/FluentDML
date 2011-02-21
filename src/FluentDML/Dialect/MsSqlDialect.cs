@@ -40,5 +40,10 @@ namespace FluentDML.Dialect
         {
             return new MsSqlInsert<T>(_commandConstructor, map);
         }
+
+        protected override IUpsert<T> CreateSqlUpsert<T>(ClassMap map)
+        {
+            return new MsSqlUpsert<T>(_commandConstructor, map);
+        }
     }
 }

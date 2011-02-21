@@ -73,6 +73,7 @@
     <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
     <Compile Include="constant_edge_cases.cs" />
+    <Compile Include="given_complex_upsert_by_map.cs" />
     <Compile Include="given_simple_insert_by_map.cs" />
     <Compile Include="given_complex_insert_by_map.cs" />
     <Compile Include="given_complex_update_by_map.cs" />

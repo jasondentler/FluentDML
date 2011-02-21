@@ -27,9 +27,15 @@ namespace FluentDML.Dialect
             return CreateSqlUpdate<T>(_map.GetClassMap<T>());
         }
 
+        public IUpsert<T> Upsert<T>()
+        {
+            return CreateSqlUpsert<T>(_map.GetClassMap<T>());
+        }
+
         protected abstract IUpdate<T> CreateSqlUpdate<T>(ClassMap map);
         protected abstract IDelete<T> CreateSqlDelete<T>(ClassMap map);
         protected abstract IInsert<T> CreateSqlInsert<T>(ClassMap map);
+        protected abstract IUpsert<T> CreateSqlUpsert<T>(ClassMap map);
 
     }
 }
