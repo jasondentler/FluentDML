@@ -1,22 +1,36 @@
-﻿using FluentDML.Dialect;
+﻿using System;
+using System.Data;
 using FluentDML.Mapping;
 using NUnit.Framework;
 
-namespace FluentDML.Tests.MsSqlDialectTests
+namespace FluentDML.Tests.DialectTests
 {
-    [TestFixture]
-    public class constant_edge_cases : BaseFixture
+    public abstract class constant_edge_cases : DialectTestFixture
     {
-
-        private IDialect DB()
+        
+        protected override IDbConnection GetOpenConnection()
         {
-            var mapMaker = new DefaultMapMaker();
-            var map = mapMaker.MakeMap(typeof (Entity));
-            return new Dialect.MsSqlDialect(map);
+            throw new NotImplementedException();
         }
 
+        protected override IDbCommand GetCommand()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Dialect.IDialect DB()
+        {
+            var mapMaker = new DefaultMapMaker();
+            var map = mapMaker.MakeMap(typeof(Entity));
+            return DB(map);
+        }
+
+        protected override void OnFixtureTearDown()
+        {
+        }
+        
         [Test]
-        public void TruePredicate()
+        public virtual void TruePredicate()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => true)
@@ -25,25 +39,26 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void FalsePredicate()
+        public virtual void FalsePredicate()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => false)
                 .ToCommand();
-            Assert.That(cmd.CommandText, Is.StringContaining("WHERE 1=0"));
+            Assert.That(cmd.CommandText, Is.StringContaining("WHERE 1=0"));            
         }
 
         [Test]
-        public void TrueConstant()
+        public virtual void TrueConstant()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => e.Flag1 == true)
                 .ToCommand();
-            Assert.That(cmd.CommandText, Is.StringContaining("[Flag1] = 1"));
+            Assert.That(cmd.CommandText, Is.StringContaining("[Flag1] = 1"));            
         }
 
+
         [Test]
-        public void FalseConstant()
+        public virtual void FalseConstant()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => e.Flag1 == false)
@@ -52,7 +67,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void IsNull()
+        public virtual void IsNull()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => e.Nullable == null)
@@ -61,7 +76,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void IsNotNull()
+        public virtual void IsNotNull()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => e.Nullable != null)
@@ -71,7 +86,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
 
 
         [Test]
-        public void BackwardIsNull()
+        public virtual void BackwardIsNull()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => null == e.Nullable)
@@ -80,7 +95,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void BackwardIsNotNull()
+        public virtual void BackwardIsNotNull()
         {
             var cmd = DB().Delete<Entity>()
                 .Where(e => null != e.Nullable)

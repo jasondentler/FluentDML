@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using FluentDML.Expressions.AST;
 
@@ -37,9 +38,17 @@ namespace FluentDML.Expressions
             if (m.Expression.NodeType == ExpressionType.Constant &&
                 m.Member.MemberType == MemberTypes.Field)
             {
-                VisitVariable(m);
+                VisitField(m);
                 return m;
             }
+
+            if (m.Expression.NodeType == ExpressionType.Constant &&
+                m.Member.MemberType == MemberTypes.Property)
+            {
+                VisitUnrelatedProperty(m);
+                return m;
+            }
+
             _expression = new Property(m);
             return m;
         }
@@ -50,11 +59,21 @@ namespace FluentDML.Expressions
             return c;
         }
 
-        protected virtual Expression VisitVariable(MemberExpression m)
+        protected virtual Expression VisitField(MemberExpression m)
         {
-            var constant = (ConstantExpression) m.Expression;
-            var field = (FieldInfo) m.Member;
+            var constant = (ConstantExpression)m.Expression;
+            var field = (FieldInfo)m.Member;
             _expression = new Constant(field.GetValue(constant.Value));
+            return m;
+        }
+
+        protected virtual Expression VisitUnrelatedProperty(MemberExpression m)
+        {
+            var constant = (ConstantExpression)m.Expression;
+            var member = (PropertyInfo) m.Member;
+            var instance = constant.Value;
+            var value = member.GetValue(instance, new object[0]);
+            _expression = new Constant(value);
             return m;
         }
 

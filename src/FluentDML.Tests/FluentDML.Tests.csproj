@@ -72,23 +72,34 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
-    <Compile Include="MsSqlDialectTests\constant_edge_cases.cs" />
-    <Compile Include="MsSqlDialectTests\given_complex_upsert_by_map.cs" />
-    <Compile Include="MsSqlDialectTests\given_simple_insert_by_map.cs" />
-    <Compile Include="MsSqlDialectTests\given_complex_insert_by_map.cs" />
-    <Compile Include="MsSqlDialectTests\given_complex_update_by_map.cs" />
+    <Compile Include="DialectTests\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\given_explicit_insert.cs" />
+    <Compile Include="DialectTests\DialectTestFixture.cs" />
+    <Compile Include="DialectTests\given_complex_insert_by_map.cs" />
+    <Compile Include="DialectTests\given_complex_update_by_map.cs" />
+    <Compile Include="DialectTests\given_complex_upsert_by_map.cs" />
+    <Compile Include="DialectTests\given_explicit_update_query.cs" />
+    <Compile Include="DialectTests\given_simple_insert_by_map.cs" />
+    <Compile Include="DialectTests\given_simple_update_by_map_query.cs" />
+    <Compile Include="DialectTests\given_delete_by_id.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerCreatedEvent.cs" />
     <Compile Include="CustomerMovedEvent.cs" />
-    <Compile Include="MsSqlDialectTests\given_simple_update_by_map_query.cs" />
+    <Compile Include="DialectTests\MsSql\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\MsSql\given_explicit_insert.cs" />
+    <Compile Include="DialectTests\MsSql\given_complex_insert_by_map.cs" />
+    <Compile Include="DialectTests\MsSql\given_complex_update_by_map.cs" />
+    <Compile Include="DialectTests\MsSql\given_complex_upsert_by_map.cs" />
+    <Compile Include="DialectTests\MsSql\given_delete_by_id.cs" />
+    <Compile Include="DialectTests\MsSql\given_explicit_update_query.cs" />
+    <Compile Include="DialectTests\MsSql\given_simple_insert_by_map.cs" />
+    <Compile Include="DialectTests\MsSql\given_simple_update_by_map_query.cs" />
     <Compile Include="DictionaryMapperFixture.cs" />
-    <Compile Include="MsSqlDialectTests\MsSqlDeleteFixture.cs" />
     <Compile Include="NHibernateAdapter\MapMakerFixture.cs" />
     <Compile Include="NHibernateAdapter\NHibernateConfiguration.cs" />
     <Compile Include="PredicateParserVisitorFixture.cs" />
     <Compile Include="DefaultMapMakerFixture.cs" />
     <Compile Include="FindPropertyVisitorFixture.cs" />
-    <Compile Include="MsSqlDialectTests\given_explicit_update_query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

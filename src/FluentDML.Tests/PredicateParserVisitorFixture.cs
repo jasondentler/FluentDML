@@ -10,6 +10,13 @@ namespace FluentDML.Tests
     public class PredicateParserVisitorFixture : BaseFixture
     {
 
+        public Guid Id { get; private set; }
+
+        public PredicateParserVisitorFixture()
+        {
+            Id = Guid.NewGuid();
+        }
+
         [Test]
         public void Can_parse_constant()
         {
@@ -53,7 +60,16 @@ namespace FluentDML.Tests
             Assert.That(myConstant.Value, Is.EqualTo(new Guid()));
         }
 
-
+        [Test]
+        public void Can_parse_unrelated_property_to_constant()
+        {
+            var expr = MakeExpression<Customer, Guid>(c => Id);
+            var myExpr = PredicateParserVisitor.Parse(expr);
+            var myConstant = myExpr as Constant;
+            Assert.That(myExpr, Is.InstanceOf<Constant>());
+            Assert.That(myConstant.Value, Is.EqualTo(Id));
+        }
+        
         private static Expression MakeExpression<T, TProperty>(Expression<Func<T, TProperty>> expression)
         {
             return expression;

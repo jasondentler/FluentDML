@@ -45,10 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapped\DictionaryMapper.cs" />
+    <Compile Include="IInsertSet.cs" />
     <Compile Include="Dialect\BaseSql.cs" />
     <Compile Include="Dialect\BaseSqlDelete.cs" />
     <Compile Include="Dialect\BaseSqlInsert.cs" />
     <Compile Include="Dialect\BaseSqlUpsert.cs" />
+    <Compile Include="Dialect\SQLiteUpsert.cs" />
+    <Compile Include="Dialect\SQLiteUpdate.cs" />
+    <Compile Include="Dialect\SQLiteInsert.cs" />
     <Compile Include="Dialect\MsSqlDelete.cs" />
     <Compile Include="Dialect\MsSqlDialect.cs" />
     <Compile Include="Dialect\MsSqlInsert.cs" />
@@ -56,7 +60,10 @@
     <Compile Include="Dialect\BaseDialect.cs" />
     <Compile Include="Dialect\BaseSqlUpdate.cs" />
     <Compile Include="Dialect\MsSqlUpsert.cs" />
-    <Compile Include="Dialect\SqlLiteDialect.cs" />
+    <Compile Include="Dialect\SQLiteDelete.cs" />
+    <Compile Include="Dialect\SQLiteDialect.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Expressions\AST\Binary.cs" />
     <Compile Include="Expressions\AST\Constant.cs" />
     <Compile Include="Expressions\AST\SimpleExpression.cs" />

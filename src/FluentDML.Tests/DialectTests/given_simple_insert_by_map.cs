@@ -8,10 +8,9 @@ using FluentDML.Dialect;
 using FluentDML.Mapping;
 using NUnit.Framework;
 
-namespace FluentDML.Tests.MsSqlDialectTests
+namespace FluentDML.Tests.DialectTests
 {
-    [TestFixture]
-    public class given_simple_insert_by_map : BaseFixture
+    public abstract class given_simple_insert_by_map : DialectTestFixture
     {
 
         protected override void OnFixtureSetup()
@@ -29,30 +28,17 @@ namespace FluentDML.Tests.MsSqlDialectTests
             Mapper.AssertConfigurationIsValid();
         }
 
-        private IDbCommand GetCommand()
+        protected  override IDbCommand GetCommand()
         {
-            return GetCommand(_event);
-        }
-
-        private IDbCommand GetCommand<TEvent>(TEvent @event)
-        {
-            var mapMaker = new DefaultMapMaker();
-            var map = mapMaker.MakeMap(typeof (Customer));
-            var db = new MsSqlDialect(map);
-            return db.Insert<Customer>()
-                .MapFrom(@event);
-        }
-
-        private IDbDataParameter GetParam(IDbCommand command, string name)
-        {
-            return (IDbDataParameter) command.Parameters[name];
+            return DB().Insert<Customer>()
+                .MapFrom(_event);
         }
 
         private CustomerCreatedEvent _event = new CustomerCreatedEvent() { EventSourceId = Guid.NewGuid(), Name = "Jason" };
 
 
         [Test]
-        public void it_generates_insert_sql()
+        public virtual void it_generates_insert_sql()
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
@@ -60,7 +46,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void it_generates_column_list()
+        public virtual void it_generates_column_list()
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
@@ -68,7 +54,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void it_generates_parameter_list()
+        public virtual void it_generates_parameter_list()
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
@@ -76,7 +62,7 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void it_generates_where_parameters()
+        public virtual void it_generates_where_parameters()
         {
             var cmd = GetCommand();
             Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(_event.EventSourceId));
@@ -84,47 +70,20 @@ namespace FluentDML.Tests.MsSqlDialectTests
         }
 
         [Test]
-        public void it_insertd_a_row()
+        public virtual void it_inserted_a_row()
         {
             int rows;
-            var id = Guid.NewGuid();
-            var mapMaker = new DefaultMapMaker();
-            var map = mapMaker.MakeMap(typeof(Customer));
-            var db = new MsSqlDialect(map);
-            var insert = db.Insert<Customer>()
-                .MapFrom(_event);
-            Debug.WriteLine(insert.CommandText);
+            var insert = GetCommand();
 
-
-            var connStr = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
-            using (var conn = new SqlConnection(connStr))
+            using (var conn = GetOpenConnection())
             {
-                conn.Open();
                 insert.Connection = conn;
                 rows = insert.ExecuteNonQuery();
                 conn.Close();
             }
-
             Assert.That(rows, Is.EqualTo(1));
-
         }
 
-        protected override void OnFixtureTearDown()
-        {
-            var mapMaker = new DefaultMapMaker();
-            var map = mapMaker.MakeMap(typeof(Customer));
-            var db = new MsSqlDialect(map);
-            var connStr = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
-            using (var conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-                var cmd = db.Delete<Customer>().Where(c => true).ToCommand();
-                cmd.Connection = conn;
-                cmd.ExecuteNonQuery();
-                conn.Close();
-            }
-            base.OnFixtureTearDown();
-        }
 
     }
 }
