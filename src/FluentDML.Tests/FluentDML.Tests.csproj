@@ -72,23 +72,23 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
-    <Compile Include="constant_edge_cases.cs" />
-    <Compile Include="given_complex_upsert_by_map.cs" />
-    <Compile Include="given_simple_insert_by_map.cs" />
-    <Compile Include="given_complex_insert_by_map.cs" />
-    <Compile Include="given_complex_update_by_map.cs" />
+    <Compile Include="MsSqlDialectTests\constant_edge_cases.cs" />
+    <Compile Include="MsSqlDialectTests\given_complex_upsert_by_map.cs" />
+    <Compile Include="MsSqlDialectTests\given_simple_insert_by_map.cs" />
+    <Compile Include="MsSqlDialectTests\given_complex_insert_by_map.cs" />
+    <Compile Include="MsSqlDialectTests\given_complex_update_by_map.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="CustomerCreatedEvent.cs" />
     <Compile Include="CustomerMovedEvent.cs" />
-    <Compile Include="given_simple_update_by_map_query.cs" />
+    <Compile Include="MsSqlDialectTests\given_simple_update_by_map_query.cs" />
     <Compile Include="DictionaryMapperFixture.cs" />
-    <Compile Include="MsSqlDeleteFixture.cs" />
+    <Compile Include="MsSqlDialectTests\MsSqlDeleteFixture.cs" />
     <Compile Include="NHibernateAdapter\MapMakerFixture.cs" />
     <Compile Include="NHibernateAdapter\NHibernateConfiguration.cs" />
     <Compile Include="PredicateParserVisitorFixture.cs" />
     <Compile Include="DefaultMapMakerFixture.cs" />
     <Compile Include="FindPropertyVisitorFixture.cs" />
-    <Compile Include="given_explicit_update_query.cs" />
+    <Compile Include="MsSqlDialectTests\given_explicit_update_query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +108,7 @@
   <ItemGroup>
     <EmbeddedResource Include="NHibernateAdapter\Customer.hbm.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

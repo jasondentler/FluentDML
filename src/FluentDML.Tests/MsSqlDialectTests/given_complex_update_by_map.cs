@@ -8,10 +8,10 @@ using FluentDML.Dialect;
 using FluentDML.Mapping;
 using NUnit.Framework;
 
-namespace FluentDML.Tests
+namespace FluentDML.Tests.MsSqlDialectTests
 {
     [TestFixture]
-    public class given_complex_upsert_by_map : BaseFixture
+    public class given_complex_update_by_map : BaseFixture
     {
 
         protected override void OnFixtureSetup()
@@ -39,7 +39,7 @@ namespace FluentDML.Tests
             var mapMaker = new DefaultMapMaker();
             var map = mapMaker.MakeMap(typeof (Customer));
             var db = new MsSqlDialect(map);
-            return db.Upsert<Customer>()
+            return db.Update<Customer>()
                 .MapFrom(@event)
                 .WithId(c => c.CustomerId);
         }
@@ -52,30 +52,43 @@ namespace FluentDML.Tests
         private CustomerMovedEvent _event = new CustomerMovedEvent()
                                                 {EventSourceId = Guid.NewGuid(), BillingCity = "Austin"};
 
+
         [Test]
-        public void it_inserted_a_row()
+        public void it_generates_update_sql()
         {
-            int rows;
-            var id = Guid.NewGuid();
-            var mapMaker = new DefaultMapMaker();
-            var map = mapMaker.MakeMap(typeof(Customer));
-            var db = new MsSqlDialect(map);
-            var connStr = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
-            using (var conn = new SqlConnection(connStr))
-            {
-                conn.Open();
+            var cmd = GetCommand();
+            var sql = cmd.CommandText;
+            Assert.That(sql, Is.StringStarting("UPDATE [Customer] SET"));
+        }
 
-                var upsert = GetCommand();
+        [Test]
+        public void it_generates_set_clause()
+        {
+            var cmd = GetCommand();
+            var sql = cmd.CommandText;
+            Assert.That(sql, Is.StringContaining("[Billing_City] = @p0"));
+        }
 
-                Debug.WriteLine(upsert.CommandText);
+        [Test]
+        public void it_generates_where_clause()
+        {
+            var cmd = GetCommand();
+            var sql = cmd.CommandText;
+            Assert.That(sql, Is.StringContaining("WHERE ([CustomerId] = @p1)"));
+        }
 
-                upsert.Connection = conn;
-                rows = upsert.ExecuteNonQuery();
-                conn.Close();
-            }
+        [Test]
+        public void it_generates_set_parameters()
+        {
+            var cmd = GetCommand();
+            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(_event.BillingCity));
+        }
 
-            Assert.That(rows, Is.EqualTo(1));
-
+        [Test]
+        public void it_generates_where_parameters()
+        {
+            var cmd = GetCommand();
+            Assert.That(GetParam(cmd, "p1").Value, Is.EqualTo(_event.EventSourceId));
         }
 
         [Test]
@@ -100,12 +113,12 @@ namespace FluentDML.Tests
                 insert.Connection = conn;
                 insert.ExecuteNonQuery();
 
-                var upsert = GetCommand();
+                var update = GetCommand();
 
-                Debug.WriteLine(upsert.CommandText);
+                Debug.WriteLine(update.CommandText);
 
-                upsert.Connection = conn;
-                rows = upsert.ExecuteNonQuery();
+                update.Connection = conn;
+                rows = update.ExecuteNonQuery();
                 conn.Close();
             }
 

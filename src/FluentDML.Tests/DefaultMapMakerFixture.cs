@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using FluentDML.Mapping;
+﻿using FluentDML.Mapping;
 using NUnit.Framework;
 
 namespace FluentDML.Tests
