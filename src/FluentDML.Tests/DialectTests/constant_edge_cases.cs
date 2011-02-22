@@ -7,7 +7,10 @@ namespace FluentDML.Tests.DialectTests
 {
     public abstract class constant_edge_cases : DialectTestFixture
     {
-        
+        protected constant_edge_cases(DialectTestFixtureConfiguration cfg) : base(cfg)
+        {
+        }
+
         protected override IDbConnection GetOpenConnection()
         {
             throw new NotImplementedException();

@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using FluentDML.Dialect;
-using FluentDML.Mapping;
 using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
 {
     public abstract class given_explicit_update_query : DialectTestFixture
     {
-
-        protected Guid Id { get; private set; }
-
-        public given_explicit_update_query()
+        protected given_explicit_update_query(DialectTestFixtureConfiguration cfg) : base(cfg)
         {
             Id = Guid.NewGuid();
         }
+
+        protected Guid Id { get; private set; }
+
+
 
         protected override IDbCommand GetCommand()
         {

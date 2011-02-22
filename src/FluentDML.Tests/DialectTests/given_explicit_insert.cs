@@ -7,6 +7,9 @@ namespace FluentDML.Tests.DialectTests
 
     public abstract class given_explicit_insert : DialectTestFixture
     {
+        protected given_explicit_insert(DialectTestFixtureConfiguration cfg) : base(cfg)
+        {
+        }
 
         protected override IDbCommand GetCommand()
         {

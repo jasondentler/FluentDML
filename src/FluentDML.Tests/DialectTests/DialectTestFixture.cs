@@ -6,6 +6,12 @@ namespace FluentDML.Tests.DialectTests
 {
     public abstract class DialectTestFixture : BaseFixture
     {
+        private readonly DialectTestFixtureConfiguration _cfg;
+
+        protected DialectTestFixture(DialectTestFixtureConfiguration cfg)
+        {
+            _cfg = cfg;
+        }
 
         protected virtual IDialect DB()
         {
@@ -14,9 +20,16 @@ namespace FluentDML.Tests.DialectTests
             return DB(map);
         }
 
-        protected abstract IDialect DB(Map map);
+        protected virtual IDialect DB(Map map)
+        {
+            return _cfg.GetDialect(map);
+        }
 
-        protected abstract IDbConnection GetOpenConnection();
+        protected virtual IDbConnection GetOpenConnection()
+        {
+            return _cfg.GetOpenConnection();
+        }
+
 
         protected abstract IDbCommand GetCommand();
 

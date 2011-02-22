@@ -63,6 +63,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,6 +74,8 @@
     <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
     <Compile Include="DialectTests\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\DialectTestFixtureConfiguration.cs" />
+    <Compile Include="DialectTests\MsSql\MsSqlConfiguration.cs" />
     <Compile Include="DialectTests\given_explicit_insert.cs" />
     <Compile Include="DialectTests\DialectTestFixture.cs" />
     <Compile Include="DialectTests\given_complex_insert_by_map.cs" />
@@ -94,6 +97,16 @@
     <Compile Include="DialectTests\MsSql\given_explicit_update_query.cs" />
     <Compile Include="DialectTests\MsSql\given_simple_insert_by_map.cs" />
     <Compile Include="DialectTests\MsSql\given_simple_update_by_map_query.cs" />
+    <Compile Include="DialectTests\SQLite\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\SQLite\given_complex_insert_by_map.cs" />
+    <Compile Include="DialectTests\SQLite\given_complex_update_by_map.cs" />
+    <Compile Include="DialectTests\SQLite\given_complex_upsert_by_map.cs" />
+    <Compile Include="DialectTests\SQLite\given_delete_by_id.cs" />
+    <Compile Include="DialectTests\SQLite\given_explicit_insert.cs" />
+    <Compile Include="DialectTests\SQLite\given_explicit_update_query.cs" />
+    <Compile Include="DialectTests\SQLite\given_simple_insert_by_map.cs" />
+    <Compile Include="DialectTests\SQLite\given_simple_update_by_map_query.cs" />
+    <Compile Include="DialectTests\SQLite\SQLiteConfiguration.cs" />
     <Compile Include="DictionaryMapperFixture.cs" />
     <Compile Include="NHibernateAdapter\MapMakerFixture.cs" />
     <Compile Include="NHibernateAdapter\NHibernateConfiguration.cs" />

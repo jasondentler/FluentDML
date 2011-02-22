@@ -8,6 +8,9 @@ namespace FluentDML.Tests.DialectTests
 
     public abstract class given_complex_update_by_map : DialectTestFixture
     {
+        protected given_complex_update_by_map(DialectTestFixtureConfiguration cfg) : base(cfg)
+        {
+        }
 
         protected override void OnFixtureSetup()
         {

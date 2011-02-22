@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using FluentDML.Dialect;
-using FluentDML.Mapping;
 using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
 {
     public abstract class given_delete_by_id : DialectTestFixture
     {
-
-        public given_delete_by_id()
+        protected given_delete_by_id(DialectTestFixtureConfiguration cfg) : base(cfg)
         {
             Id = Guid.NewGuid();
         }

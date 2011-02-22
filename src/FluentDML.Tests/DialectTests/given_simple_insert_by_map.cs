@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
 using AutoMapper;
-using FluentDML.Dialect;
-using FluentDML.Mapping;
 using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
 {
     public abstract class given_simple_insert_by_map : DialectTestFixture
     {
+        protected given_simple_insert_by_map(DialectTestFixtureConfiguration cfg) : base(cfg)
+        {
+        }
 
         protected override void OnFixtureSetup()
         {

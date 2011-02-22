@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
 using AutoMapper;
-using FluentDML.Dialect;
-using FluentDML.Mapping;
 using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
@@ -13,6 +8,9 @@ namespace FluentDML.Tests.DialectTests
 
     public abstract class given_complex_upsert_by_map : DialectTestFixture
     {
+        protected given_complex_upsert_by_map(DialectTestFixtureConfiguration cfg) : base(cfg)
+        {
+        }
 
         protected override void OnFixtureSetup()
         {
@@ -41,34 +39,63 @@ namespace FluentDML.Tests.DialectTests
         [Test]
         public virtual void it_inserted_a_row()
         {
-            int rows;
-            var insert = GetCommand();
+            var clear = DB().Delete<Customer>()
+                .Where(c => true)
+                .ToCommand();
+
+
+            var upsert = GetCommand();
 
             using (var conn = GetOpenConnection())
             {
-                insert.Connection = conn;
-                rows = insert.ExecuteNonQuery();
+                clear.Connection = conn;
+                clear.ExecuteNonQuery();
+
+                upsert.Connection = conn;
+                var rows = upsert.ExecuteNonQuery();
+                Assert.That(rows, Is.EqualTo(1));
+
+                var countQuery = conn.CreateCommand();
+                countQuery.CommandText = "select count(*) from Customer";
+                var count = countQuery.ExecuteScalar();
+                Assert.That(count.ToString(), Is.EqualTo("1"));
+
+                var nameQuery = conn.CreateCommand();
+                nameQuery.CommandText = "select Name from Customer";
+                var name = nameQuery.ExecuteScalar();
+                Assert.That(name, Is.EqualTo(DBNull.Value));
+
+                var billingCityQuery = conn.CreateCommand();
+                billingCityQuery.CommandText = "select Billing_City from Customer";
+                var billingCity = billingCityQuery.ExecuteScalar();
+                Assert.That(billingCity.ToString(), Is.EqualTo(_event.BillingCity));
+
+
                 conn.Close();
             }
-            Assert.That(rows, Is.EqualTo(1));
         }
 
 
         [Test]
         public virtual void it_updated_a_row()
         {
-            var id = Guid.NewGuid();
-            IDbCommand insert = DB().Insert<Customer>()
+            var clear = DB().Delete<Customer>()
+                .Where(c => true)
+                .ToCommand();
+
+            var insert = DB().Insert<Customer>()
                 .Set(c => c.CustomerId, _event.EventSourceId)
-                .Set(c => c.Name, "Not Jason")
-                .Set(c => c.Billing.City, "Not Houston")
+                .Set(c => c.Name, "Jason")
+                .Set(c => c.Billing.City, "Not Austin")
                 .ToCommand();
 
             var update = GetCommand();
-
-
+            
             using (var conn = GetOpenConnection())
             {
+                clear.Connection = conn;
+                clear.ExecuteNonQuery();
+
                 insert.Connection = conn;
                 var rows = insert.ExecuteNonQuery();
                 if (rows != 1)
@@ -77,6 +104,22 @@ namespace FluentDML.Tests.DialectTests
                 update.Connection = conn;
                 rows = update.ExecuteNonQuery();
                 Assert.That(rows, Is.EqualTo(1));
+
+                var countQuery = conn.CreateCommand();
+                countQuery.CommandText = "select count(*) from Customer";
+                var count = countQuery.ExecuteScalar();
+                Assert.That(count.ToString(), Is.EqualTo("1"));
+
+                var nameQuery = conn.CreateCommand();
+                nameQuery.CommandText = "select Name from Customer";
+                var name = nameQuery.ExecuteScalar();
+                Assert.That(name.ToString(), Is.EqualTo("Jason"));
+
+                var billingCityQuery = conn.CreateCommand();
+                billingCityQuery.CommandText = "select Billing_City from Customer";
+                var billingCity = billingCityQuery.ExecuteScalar();
+                Assert.That(billingCity.ToString(), Is.EqualTo(_event.BillingCity));
+
                 conn.Close();
             }
         }
