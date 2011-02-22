@@ -65,7 +65,7 @@ namespace FluentDML.Tests
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("[CustomerId],[Billing_City]"));
+            Assert.That(sql, Is.StringContaining("[Billing_City],[CustomerId]"));
         }
 
         [Test]
@@ -80,8 +80,8 @@ namespace FluentDML.Tests
         public void it_generates_where_parameters()
         {
             var cmd = GetCommand();
-            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(_event.EventSourceId));
-            Assert.That(GetParam(cmd, "p1").Value, Is.EqualTo(_event.BillingCity));
+            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(_event.BillingCity));
+            Assert.That(GetParam(cmd, "p1").Value, Is.EqualTo(_event.EventSourceId));
         }
 
         [Test]

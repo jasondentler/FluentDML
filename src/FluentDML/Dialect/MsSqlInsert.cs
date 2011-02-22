@@ -11,40 +11,45 @@ namespace FluentDML.Dialect
     public class MsSqlInsert<T> : BaseSqlInsert<T>
     {
         private readonly Func<IDbCommand> _commandConstructor;
+        protected readonly Dictionary<string, string> ColumnToParameterMap;
 
         public MsSqlInsert(Func<IDbCommand> commandConstructor, ClassMap map) : base(map)
         {
             _commandConstructor = commandConstructor;
+            ColumnToParameterMap = new Dictionary<string, string>();
         }
-
-        public override IDbCommand MapFrom<TSource>(TSource source)
+        
+        protected override IDbCommand ToCommand(
+            string tableName, 
+            Dictionary<string, object> columnMap)
         {
-            var valueMap = DictionaryMapper.GetValueMap<TSource, T>(source, Map);
             var sb = new StringBuilder();
             var cmd = _commandConstructor();
             cmd.CommandType = CommandType.Text;
 
+            foreach (var column in columnMap.OrderBy(kv => kv.Key))
+                SetParameter(cmd, column.Value, column.Key);
+
             sb.AppendFormat("INSERT INTO [{0}] (", Map.TableName);
-            sb.Append(string.Join(",", valueMap.Select(kv => ColumnMap(kv, cmd)).ToArray()));
+            sb.Append(string.Join(",", ColumnToParameterMap
+                                           .OrderBy(kv => kv.Key)
+                                           .Select(kv => string.Format("[{0}]", kv.Key))));
+
             sb.Append(") VALUES (");
-            sb.Append(string.Join(",", IntSequence(0, cmd.Parameters.Count).Select(i => "@p" + i).ToArray()));
+            sb.Append(string.Join(",", ColumnToParameterMap
+                                           .OrderBy(kv => kv.Key)
+                                           .Select(kv => string.Format("@{0}", kv.Value))));
             sb.Append(")");
             cmd.CommandText = sb.ToString();
             return cmd;
         }
-
-        private string ColumnMap(KeyValuePair<string, object> item, IDbCommand command)
+        
+        protected override string SetParameter(IDbCommand command, object value, string columnName)
         {
-            var columnName = Map.GetColumnName(item.Key);
-            var parmName = SetParameter(command, item.Value);
-            return string.Format("[{0}]", columnName);
+            var paramName = base.SetParameter(command, value, columnName);
+            ColumnToParameterMap[columnName] = paramName;
+            return paramName;
         }
-
-        private IEnumerable<int> IntSequence(int fromInclusive, int toExclusive)
-        {
-            for (var i = fromInclusive; i < toExclusive; i++)
-                yield return i;
-        }
-
+        
     }
 }
