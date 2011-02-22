@@ -7,7 +7,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
     public class given_explicit_insert : DialectTests.given_explicit_insert
     {
         public given_explicit_insert()
-            : base(new MsSql.MsSqlConfiguration())
+            : base(new SQLiteConfiguration())
         {
         }
 

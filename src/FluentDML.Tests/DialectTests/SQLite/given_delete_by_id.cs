@@ -7,7 +7,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
     public class given_delete_by_id : DialectTests.given_delete_by_id
     {
         public given_delete_by_id()
-            : base(new MsSql.MsSqlConfiguration())
+            : base(new SQLiteConfiguration())
         {
         }
 

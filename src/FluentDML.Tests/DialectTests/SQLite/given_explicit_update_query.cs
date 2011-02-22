@@ -7,7 +7,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
     public class given_explicit_update_query : DialectTests.given_explicit_update_query
     {
         public given_explicit_update_query()
-            : base(new MsSql.MsSqlConfiguration())
+            : base(new SQLiteConfiguration())
         {
         }
 

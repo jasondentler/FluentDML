@@ -7,7 +7,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
     public class given_simple_insert_by_map : DialectTests.given_simple_insert_by_map
     {
         public given_simple_insert_by_map()
-            : base(new MsSql.MsSqlConfiguration())
+            : base(new SQLiteConfiguration())
         {
         }
 

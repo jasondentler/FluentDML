@@ -44,27 +44,23 @@ namespace FluentDML.Dialect
 
             var equality = (Binary) predicate;
             var left = (Property) equality.Left;
+            var right = (Constant) equality.Right;
             var predicateColumn = Map.GetColumnName(left.PropertyPath);
+            var predicateValue = right.Value;
+
 
             var cmd = _commandConstructor();
             cmd.CommandType = CommandType.Text;
 
+
+            foreach (var item in columnMap)
+                SetParameter(cmd, item.Value, item.Key);
+
+            SetParameter(cmd, predicateValue, predicateColumn);
+
             var sb = new StringBuilder();
 
-            sb.AppendLine("BEGIN TRAN;");
-            sb.AppendFormat("UPDATE [{0}] WITH (SERIALIZABLE) SET \r\n", tableName);
-            sb.Append(BuildSetList(columnMap, cmd, ColumnToParameterMap));
-            sb.AppendLine();
-            sb.Append(Convert(predicate, cmd));
-
-            // Get the parameter created when converting the predicate
-            ColumnToParameterMap[predicateColumn] = ColumnToParameterMap[string.Empty];
-            ColumnToParameterMap.Remove(string.Empty);
-
-            sb.AppendLine();
-            sb.AppendLine("IF @@ROWCOUNT = 0");
-            sb.AppendLine();
-            sb.AppendFormat("    INSERT INTO [{0}] (", tableName);
+            sb.AppendFormat("    INSERT OR IGNORE INTO [{0}] (", tableName);
             sb.AppendLine();
             sb.Append(string.Join(",\r\n", ColumnToParameterMap.Keys
                                                .OrderBy(col => col)
@@ -75,13 +71,13 @@ namespace FluentDML.Dialect
                                                .OrderBy(item => item.Key)
                                                .Select(item => string.Format("       @{0}", item.Value))));
             sb.AppendLine(");");
+
+
+
+            sb.AppendFormat("UPDATE [{0}] SET \r\n", tableName);
+            sb.Append(BuildSetList(columnMap, cmd, ColumnToParameterMap));
             sb.AppendLine();
-            sb.AppendLine("IF @@ROWCOUNT <> 1");
-            sb.AppendLine("BEGIN");
-            sb.AppendLine("   COMMIT TRAN;");
-            sb.AppendLine("END");
-            sb.AppendLine("ELSE");
-            sb.AppendLine("   ROLLBACK TRAN");
+            sb.Append(Convert(predicate, cmd));
 
             cmd.CommandText = sb.ToString();
             return cmd;
@@ -93,7 +89,7 @@ namespace FluentDML.Dialect
             Dictionary<string, string> columnToParameterMap)
         {
             var setListParts = (from column in columnMap
-                                let paramName = SetParameter(command, column.Value, column.Key)
+                                let paramName = columnToParameterMap[column.Key]
                                 select string.Format("[{0}]=@{1} ", column.Key, paramName)).ToList();
             return string.Join(",\r\n", setListParts);
         }

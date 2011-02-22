@@ -53,7 +53,7 @@ namespace FluentDML.Tests.DialectTests
 
                 upsert.Connection = conn;
                 var rows = upsert.ExecuteNonQuery();
-                Assert.That(rows, Is.EqualTo(1));
+                Assert.That(rows, Is.Not.EqualTo(0));
 
                 var countQuery = conn.CreateCommand();
                 countQuery.CommandText = "select count(*) from Customer";
@@ -74,6 +74,7 @@ namespace FluentDML.Tests.DialectTests
                 conn.Close();
             }
         }
+
 
 
         [Test]
@@ -103,7 +104,7 @@ namespace FluentDML.Tests.DialectTests
 
                 update.Connection = conn;
                 rows = update.ExecuteNonQuery();
-                Assert.That(rows, Is.EqualTo(1));
+                Assert.That(rows, Is.Not.EqualTo(0));
 
                 var countQuery = conn.CreateCommand();
                 countQuery.CommandText = "select count(*) from Customer";

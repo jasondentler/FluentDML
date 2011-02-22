@@ -7,7 +7,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
     public class given_simple_update_by_map_query : DialectTests.given_simple_update_by_map_query
     {
         public given_simple_update_by_map_query()
-            : base(new MsSql.MsSqlConfiguration())
+            : base(new SQLiteConfiguration())
         {
         }
 

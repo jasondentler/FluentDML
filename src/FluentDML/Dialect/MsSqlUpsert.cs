@@ -52,6 +52,7 @@ namespace FluentDML.Dialect
             var sb = new StringBuilder();
 
             sb.AppendLine("BEGIN TRAN;");
+            sb.AppendLine("DECLARE @rowcount int;");
             sb.AppendFormat("UPDATE [{0}] WITH (SERIALIZABLE) SET \r\n", tableName);
             sb.Append(BuildSetList(columnMap, cmd, ColumnToParameterMap));
             sb.AppendLine();
@@ -62,7 +63,9 @@ namespace FluentDML.Dialect
             ColumnToParameterMap.Remove(string.Empty);
 
             sb.AppendLine();
-            sb.AppendLine("IF @@ROWCOUNT = 0");
+            sb.AppendLine("SET @rowcount = @@ROWCOUNT;");
+            sb.AppendLine("IF @rowcount = 0");
+            sb.AppendLine("BEGIN");
             sb.AppendLine();
             sb.AppendFormat("    INSERT INTO [{0}] (", tableName);
             sb.AppendLine();
@@ -75,8 +78,10 @@ namespace FluentDML.Dialect
                                                .OrderBy(item => item.Key)
                                                .Select(item => string.Format("       @{0}", item.Value))));
             sb.AppendLine(");");
+            sb.AppendLine("SET @rowcount = @@ROWCOUNT;");
+            sb.AppendLine("END");
             sb.AppendLine();
-            sb.AppendLine("IF @@ROWCOUNT <> 1");
+            sb.AppendLine("IF @rowcount = 1");
             sb.AppendLine("BEGIN");
             sb.AppendLine("   COMMIT TRAN;");
             sb.AppendLine("END");
