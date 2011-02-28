@@ -26,6 +26,12 @@ namespace FluentDML.Dialect
         {
         }
 
+
+        protected override IDbConnection CreateConnection()
+        {
+            return new SqlConnection();
+        }
+
         protected override IUpdate<T> CreateSqlUpdate<T>(ClassMap map)
         {
             return new MsSqlUpdate<T>(_commandConstructor, map);

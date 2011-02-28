@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using FluentDML.Mapping;
 
@@ -16,6 +17,11 @@ namespace FluentDML.Dialect
         protected IDbCommand CreateCommand()
         {
             return _provider.CreateCommand();
+        }
+
+        protected override IDbConnection CreateConnection()
+        {
+            return _provider.CreateConnection();
         }
 
         protected override IUpdate<T> CreateSqlUpdate<T>(ClassMap map)

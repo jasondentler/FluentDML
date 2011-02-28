@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Configuration;
+using System.Data;
 using FluentDML.Mapping;
 
 namespace FluentDML.Dialect
@@ -11,6 +12,17 @@ namespace FluentDML.Dialect
         {
             _map = map;
         }
+
+        public virtual IDbConnection GetConnection(string connectionStringName)
+        {
+            var connStr = ConfigurationManager.ConnectionStrings[connectionStringName]
+                .ConnectionString;
+            var conn = CreateConnection();
+            conn.ConnectionString = connStr;
+            return conn;
+        }
+
+        protected abstract IDbConnection CreateConnection();
 
         public IInsert<T> Insert<T>()
         {

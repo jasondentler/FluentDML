@@ -36,6 +36,7 @@
       <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -85,6 +86,10 @@
     <Compile Include="Mapping\IMapMaker.cs" />
     <Compile Include="Mapping\Map.cs" />
     <Compile Include="Mapping\MapMaker.cs" />
+    <Compile Include="ReadModel\Denormalizer.cs" />
+    <Compile Include="ReadModel\DialectExtensions.cs" />
+    <Compile Include="ReadModel\DoNothingMappingExpression.cs" />
+    <Compile Include="ReadModel\IDenormalizer.cs" />
     <Compile Include="SyntaxExample.cs" />
     <Compile Include="IDelete.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
