@@ -17,7 +17,7 @@ namespace FluentDML.ReadModel
             var cmd = dialect.Upsert<TEntity>()
                 .MapFrom(@event)
                 .WithId(id);
-            return Execute(dialect, connectionStringName, cmd);
+            return dialect.Execute(connectionStringName, cmd);
         }
 
         public static int Update<TEntity, TEvent>(
@@ -29,7 +29,7 @@ namespace FluentDML.ReadModel
             var cmd = dialect.Update<TEntity>()
                 .MapFrom(@event)
                 .WithId(id);
-            return Execute(dialect, connectionStringName, cmd);
+            return dialect.Execute(connectionStringName, cmd);
         }
 
         public static int Insert<TEntity, TEvent>(
@@ -40,28 +40,28 @@ namespace FluentDML.ReadModel
         {
             var cmd = dialect.Insert<TEntity>()
                 .MapFrom(@event);
-            return Execute(dialect, connectionStringName, cmd);
+            return dialect.Execute(connectionStringName, cmd);
         }
 
-        private static int Execute(IDialect dialect, string connectionStringName,  IDbCommand command)
+        public static int Execute(this IDialect dialect, string connectionStringName,  IDbCommand command)
         {
             int rowsAffected;
             using (var conn = dialect.GetConnection(connectionStringName))
             {
                 conn.Open();
-                rowsAffected = Execute(conn, command);
+                rowsAffected = conn.Execute(command);
                 conn.Close();
             }
             return rowsAffected;
         }
 
-        private static int Execute(IDbConnection connection, IDbCommand command)
+        private static int Execute(this IDbConnection connection, IDbCommand command)
         {
             command.Connection = connection;
-            return Execute(command);
+            return command.Execute();
         }
 
-        private static int Execute(IDbCommand command)
+        private static int Execute(this IDbCommand command)
         {
             return command.ExecuteNonQuery();
         }

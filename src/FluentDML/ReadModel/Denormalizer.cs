@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
@@ -77,6 +78,30 @@ namespace FluentDML.ReadModel
             _dialect.Update(@event, GetId(), _connectionStringName);
         }
 
+        protected IUpdate<TEntity> Update()
+        {
+            return _dialect.Update<TEntity>();
+        }
+
+        protected IInsert<TEntity> Insert()
+        {
+            return _dialect.Insert<TEntity>();
+        }
+
+        protected IUpsert<TEntity> Upsert()
+        {
+            return _dialect.Upsert<TEntity>();
+        }
+
+        protected IDelete<TEntity> Delete()
+        {
+            return _dialect.Delete<TEntity>();
+        }
+
+        protected int Execute(IDbCommand command)
+        {
+            return _dialect.Execute(_connectionStringName, command);
+        }
 
     }
 }
