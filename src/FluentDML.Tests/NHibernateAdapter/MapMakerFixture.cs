@@ -50,7 +50,7 @@ namespace FluentDML.Tests.NHibernateAdapter
             var mapMaker = new NHibernateMapMaker(NHibernateConfiguration.Configuration);
             var map = mapMaker.MakeMap();
             var classMap = map.GetClassMap<Customer>();
-            Assert.That(classMap.GetMappedProperties().Count(), Is.EqualTo(3));
+            Assert.That(classMap.GetMappedProperties().Count(), Is.EqualTo(4));
         }
 
         [Test]

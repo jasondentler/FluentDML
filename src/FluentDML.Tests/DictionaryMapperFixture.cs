@@ -21,11 +21,13 @@ namespace FluentDML.Tests
             Mapper.CreateMap<Address, Address>();
             Mapper.CreateMap<CustomerCreatedEvent, Customer>()
                 .ForMember(c => c.CustomerId, mo => mo.MapFrom(e => e.EventSourceId))
-                .ForMember(c => c.Billing, mo => mo.Ignore());
+                .ForMember(c => c.Billing, mo => mo.Ignore())
+                .ForMember(c => c.DayOfTheWeek, mo => mo.Ignore());
             Mapper.CreateMap<CustomerMovedEvent, Customer>()
                 .ForMember(c => c.CustomerId, mo => mo.MapFrom(e => e.EventSourceId))
                 .ForMember(c => c.Name, mo => mo.Ignore())
-                .ForMember(c => c.Billing, mo => mo.MapFrom(e => new Address() {City = e.BillingCity}));
+                .ForMember(c => c.Billing, mo => mo.MapFrom(e => new Address() {City = e.BillingCity}))
+                .ForMember(c => c.DayOfTheWeek, mo => mo.Ignore());
             Mapper.AssertConfigurationIsValid();
         }
 

@@ -4,19 +4,21 @@ using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
 {
-    public abstract class given_delete_by_id : DialectTestFixture
+    public abstract class given_delete_with_constant_enum_predicate : DialectTestFixture
     {
-        protected given_delete_by_id(DialectTestFixtureConfiguration cfg) : base(cfg)
+        protected given_delete_with_constant_enum_predicate(DialectTestFixtureConfiguration cfg) : base(cfg)
         {
             Id = Guid.NewGuid();
+            Day = DayOfWeek.Thursday;
         }
 
         protected Guid Id { get; private set; }
+        protected DayOfWeek Day { get; private set; }
 
         protected override IDbCommand GetCommand()
         {
             return DB().Delete<Customer>()
-                .Where(c => c.CustomerId == Id)
+                .Where(c => c.DayOfTheWeek == DayOfWeek.Thursday)
                 .ToCommand();
         }
 
@@ -34,14 +36,14 @@ namespace FluentDML.Tests.DialectTests
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("WHERE ([CustomerId] = @p0)"));
+            Assert.That(sql, Is.StringContaining("WHERE ([DayOfTheWeek] = @p0)"));
         }
 
         [Test]
         public virtual void it_generates_where_parameters()
         {
             var cmd = GetCommand();
-            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(Id));
+            Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(Convert.ToInt32(Day)));
         }
 
         [Test]
@@ -49,8 +51,9 @@ namespace FluentDML.Tests.DialectTests
         {
             IDbCommand insert = DB().Insert<Customer>()
                 .Set(c => c.CustomerId, Id)
-                .Set(c => c.Name, "Not Jason")
+                .Set(c => c.Name, "Jason")
                 .Set(c => c.Billing.City, "Not Houston")
+                .Set(c => c.DayOfTheWeek, Day)
                 .ToCommand();
 
             var delete = GetCommand();

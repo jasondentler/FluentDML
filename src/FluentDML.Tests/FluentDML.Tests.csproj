@@ -63,7 +63,11 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\SQLite.NET\bin\x64\System.Data.SQLite.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,7 +78,13 @@
     <Compile Include="Address.cs" />
     <Compile Include="BaseFixture.cs" />
     <Compile Include="DialectTests\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\given_delete_with_variable_enum_predicate.cs" />
+    <Compile Include="DialectTests\given_delete_with_constant_enum_predicate.cs" />
+    <Compile Include="DialectTests\given_delete_with_complex_where.cs" />
     <Compile Include="DialectTests\DialectTestFixtureConfiguration.cs" />
+    <Compile Include="DialectTests\MsSql\given_delete_with_variable_enum_predicate.cs" />
+    <Compile Include="DialectTests\MsSql\given_delete_with_constant_enum_predicate.cs" />
+    <Compile Include="DialectTests\MsSql\given_delete_with_complex_where.cs" />
     <Compile Include="DialectTests\MsSql\MsSqlConfiguration.cs" />
     <Compile Include="DialectTests\given_explicit_insert.cs" />
     <Compile Include="DialectTests\DialectTestFixture.cs" />
@@ -98,6 +108,9 @@
     <Compile Include="DialectTests\MsSql\given_simple_insert_by_map.cs" />
     <Compile Include="DialectTests\MsSql\given_simple_update_by_map_query.cs" />
     <Compile Include="DialectTests\SQLite\constant_edge_cases.cs" />
+    <Compile Include="DialectTests\SQLite\given_delete_with_variable_enum_predicate.cs" />
+    <Compile Include="DialectTests\SQLite\given_delete_with_constant_enum_predicate.cs" />
+    <Compile Include="DialectTests\SQLite\given_delete_with_complex_where.cs" />
     <Compile Include="DialectTests\SQLite\given_complex_insert_by_map.cs" />
     <Compile Include="DialectTests\SQLite\given_complex_update_by_map.cs" />
     <Compile Include="DialectTests\SQLite\given_complex_upsert_by_map.cs" />

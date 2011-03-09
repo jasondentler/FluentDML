@@ -178,6 +178,8 @@ namespace FluentDML.Dialect
                     Convert(unary.Expression, command, sql);
                     return;
                 case ExpressionType.Convert:
+                    Convert(unary.Expression, command, sql);
+                    return;
                 case ExpressionType.ConvertChecked:
                 case ExpressionType.ArrayLength:
                 case ExpressionType.Quote:

@@ -10,6 +10,7 @@
     <component name="Billing" class="Address">
       <property name="City" column="Billing_City" />
     </component>
+    <property name="DayOfTheWeek" />
   </class>
 </hibernate-mapping>
 

@@ -20,7 +20,7 @@ namespace FluentDML.Tests.DialectTests.SQLite
             conn.Open();
 
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"CREATE TABLE Customer (CustomerId TEXT PRIMARY KEY, Name TEXT, Billing_City TEXT)";
+            cmd.CommandText = @"CREATE TABLE Customer (CustomerId TEXT PRIMARY KEY, Name TEXT, Billing_City TEXT, DayOfTheWeek INTEGER)";
             cmd.ExecuteNonQuery();
 
             return conn;

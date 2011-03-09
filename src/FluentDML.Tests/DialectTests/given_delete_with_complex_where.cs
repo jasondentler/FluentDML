@@ -4,19 +4,21 @@ using NUnit.Framework;
 
 namespace FluentDML.Tests.DialectTests
 {
-    public abstract class given_delete_by_id : DialectTestFixture
+    public abstract class given_delete_with_complex_where : DialectTestFixture
     {
-        protected given_delete_by_id(DialectTestFixtureConfiguration cfg) : base(cfg)
+        protected given_delete_with_complex_where(DialectTestFixtureConfiguration cfg) : base(cfg)
         {
             Id = Guid.NewGuid();
+            Name = "Jason";
         }
 
         protected Guid Id { get; private set; }
+        protected string Name { get; private set; }
 
         protected override IDbCommand GetCommand()
         {
             return DB().Delete<Customer>()
-                .Where(c => c.CustomerId == Id)
+                .Where(c => c.CustomerId == Id && c.Name == Name)
                 .ToCommand();
         }
 
@@ -34,7 +36,7 @@ namespace FluentDML.Tests.DialectTests
         {
             var cmd = GetCommand();
             var sql = cmd.CommandText;
-            Assert.That(sql, Is.StringContaining("WHERE ([CustomerId] = @p0)"));
+            Assert.That(sql, Is.StringContaining("WHERE (([CustomerId] = @p0) AND ([Name] = @p1))"));
         }
 
         [Test]
@@ -42,6 +44,7 @@ namespace FluentDML.Tests.DialectTests
         {
             var cmd = GetCommand();
             Assert.That(GetParam(cmd, "p0").Value, Is.EqualTo(Id));
+            Assert.That(GetParam(cmd, "p1").Value, Is.EqualTo(Name));
         }
 
         [Test]
@@ -49,7 +52,7 @@ namespace FluentDML.Tests.DialectTests
         {
             IDbCommand insert = DB().Insert<Customer>()
                 .Set(c => c.CustomerId, Id)
-                .Set(c => c.Name, "Not Jason")
+                .Set(c => c.Name, "Jason")
                 .Set(c => c.Billing.City, "Not Houston")
                 .ToCommand();
 
